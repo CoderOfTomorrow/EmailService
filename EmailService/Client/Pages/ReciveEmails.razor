@@ -1,0 +1,23 @@
+﻿@page "/recive"
+@inject HttpClient HttpClient
+
+<h3>Recive Emails</h3>
+
+<hr />
+@if (emailList != null)
+{
+    foreach (var obj in emailList)
+    {
+        <h5>@obj.Name   @obj.Subject</h5>
+    }
+}
+
+@code {
+    private List<EmailDto> emailList = new List<EmailDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        emailList = await HttpClient.GetFromJsonAsync<List<EmailDto>>($"api/email");
+        StateHasChanged();
+    }
+}

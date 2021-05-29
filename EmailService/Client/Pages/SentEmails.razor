@@ -1,0 +1,30 @@
+﻿@page "/sent"
+@inject HttpClient HttpClient
+
+<h3>Sent Emails</h3>
+<hr />
+<div class="mb-3">
+    <label class="form-label">Email address</label>
+    <input type="email" class="form-control" placeholder="name@example.com" @bind=newEmail.Name>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Subject</label>
+    <input type="text" class="form-control" @bind=newEmail.Subject>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Content</label>
+    <textarea class="form-control" rows="3" @bind="newEmail.Content"></textarea>
+</div>
+<button class="btn btn-danger" @onclick=SentAction>Sent Email</button>
+
+@code {
+    private EmailDto newEmail =  new();
+
+    private async Task SentAction()
+    {
+        await HttpClient.PostAsJsonAsync($"api/email", newEmail);
+        newEmail = new();
+    }
+}
